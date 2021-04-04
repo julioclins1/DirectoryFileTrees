@@ -120,9 +120,9 @@ the error manifests itself or is "noticed" by the client.
 
       Executable         Function with the underlying error
 ===============================================================
-         ./bdtBad1        main()
+         ./bdtBad1        BDT_insertPath()
 ---------------------------------------------------------------
-         ./bdtBad2        BDT_newNode() DOUBLE CHECK
+         ./bdtBad2        BDT_newNode()
 ---------------------------------------------------------------
          ./bdtBad3        BDT_unlinkParentToChild()
 ===============================================================
@@ -130,9 +130,11 @@ the error manifests itself or is "noticed" by the client.
 For bdtBad4, you do not have to find the bug. Instead, indicate what
 is different about trying to debug this executable in gdb versus the
 other three:
-      Some of the characters being printed don't have an ASCII
-      equivalent (for instance, 0/). So they are being printed
-      as "^", for example.
+
+      Unlike bdtBad1 and 2, bdtBad4 there is no error message
+      indicating where the error could be.
+      Also, the output includes all of bdtGood's output, in the
+      correct order (unlike 3), but with additional parts.
 
 
 
