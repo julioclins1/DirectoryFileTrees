@@ -131,10 +131,15 @@ For bdtBad4, you do not have to find the bug. Instead, indicate what
 is different about trying to debug this executable in gdb versus the
 other three:
 
-      Unlike bdtBad1 and 2, bdtBad4 there is no error message
-      indicating where the error could be.
-      Also, the output includes all of bdtGood's output, in the
-      correct order (unlike 3), but with additional parts.
+      Unlike for the other three modules, every time we run bdtBad4
+      in the shell, we get different garbage results, because the
+      shell separates different parts of memory for the program (as
+      though it was not deterministic. But when we run it in gdb,
+      we always get the same output (because gdb uses the same location
+      in memory).
+
+      Incidentally, the bug is located in BDT_toString(), where result
+      is malloc'ed but not initialized.
 
 
 
@@ -142,7 +147,12 @@ For bdtBad5, you do not have to find the bug. Instead, indicate one
 hypothesis for how the program could crash within the DynArray module,
 which we promise is itself correct:
 
+      If DynArray is correct, the only way the program could crash
+      within it is if the client violates the contract, sending
+      wrong parameters to DynArray (which, in fact, is what happens).
 
+      The bug is in BDT_toString, where DynArray_new is built with
+      count + 1 as argument instead of just count.
 
 ------------------------------------------------------------------------
 What are your critiques of the given DT implementations, as

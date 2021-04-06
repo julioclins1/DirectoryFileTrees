@@ -1,0 +1,42 @@
++break main
+Breakpoint 1 at 0x40274c: file bdt_client.c, line 22.
++run
+Starting program: /u/jcclb/cos217/assignment4/DirectoryFileTrees/1BDT/bdtBad5 
+
+Breakpoint 1, main () at bdt_client.c:22
+/u/jcclb/cos217/assignment4/DirectoryFileTrees/1BDT/bdt_client.c:22:814:beg:0x40274c
+Missing separate debuginfos, use: debuginfo-install glibc-2.17-222.sd7.aarch64
++n 3
+/u/jcclb/cos217/assignment4/DirectoryFileTrees/1BDT/bdt_client.c:29:1143:beg:0x4027e8
++n
+/u/jcclb/cos217/assignment4/DirectoryFileTrees/1BDT/bdt_client.c:30:1176:beg:0x402814
++n
+/u/jcclb/cos217/assignment4/DirectoryFileTrees/1BDT/bdt_client.c:31:1222:beg:0x402848
++s
+BDT_toString () at bdtBad5.c:467
+/u/cos217/Assignment4/bdtBad5.c:467:11679:beg:0x402680
++n
+/u/cos217/Assignment4/bdtBad5.c:468:11730:beg:0x402688
++n
+/u/cos217/Assignment4/bdtBad5.c:470:11755:beg:0x40268c
++n
+/u/cos217/Assignment4/bdtBad5.c:473:11797:beg:0x4026a8
++n
+/u/cos217/Assignment4/bdtBad5.c:474:11831:beg:0x4026c0
++n
+/u/cos217/Assignment4/bdtBad5.c:476:11881:beg:0x4026d8
++s
+DynArray_map (oDynArray=0x430010, pfApply=0x402544 <BDT_strlenAccumulate>, pvExtra=0xfffffffff028) at dynarray.c:246
+/u/jcclb/cos217/assignment4/DirectoryFileTrees/1BDT/dynarray.c:246:6201:beg:0x40134c
++n
+/u/jcclb/cos217/assignment4/DirectoryFileTrees/1BDT/dynarray.c:247:6231:beg:0x401378
++n
+/u/jcclb/cos217/assignment4/DirectoryFileTrees/1BDT/dynarray.c:248:6259:beg:0x4013a4
++n
+/u/jcclb/cos217/assignment4/DirectoryFileTrees/1BDT/dynarray.c:250:6300:beg:0x4013d4
++s
+/u/jcclb/cos217/assignment4/DirectoryFileTrees/1BDT/dynarray.c:251:6344:beg:0x4013dc
++n
+
+Program received signal SIGABRT, Aborted.
+0x0000ffffbe5f50e8 in raise () from /lib64/libc.so.6

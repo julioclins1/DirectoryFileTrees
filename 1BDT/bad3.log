@@ -1,0 +1,53 @@
++break main
+Breakpoint 1 at 0x402738: file bdt_client.c, line 22.
++run
+Starting program: /u/jcclb/cos217/assignment4/DirectoryFileTrees/1BDT/bdtBad3 
+
+Breakpoint 1, main () at bdt_client.c:22
+/u/jcclb/cos217/assignment4/DirectoryFileTrees/1BDT/bdt_client.c:22:814:beg:0x402738
+Missing separate debuginfos, use: debuginfo-install glibc-2.17-222.sd7.aarch64
++n 35
+/u/jcclb/cos217/assignment4/DirectoryFileTrees/1BDT/bdt_client.c:73:2956:beg:0x402d50
++n 15
+/u/jcclb/cos217/assignment4/DirectoryFileTrees/1BDT/bdt_client.c:95:3904:beg:0x402fd4
++n
+/u/jcclb/cos217/assignment4/DirectoryFileTrees/1BDT/bdt_client.c:96:3937:beg:0x402ff0
++n
+/u/jcclb/cos217/assignment4/DirectoryFileTrees/1BDT/bdt_client.c:97:3951:beg:0x402ff8
++s
+BDT_rmPath (path=0x403770 "a/b") at bdtBad3.c:381
+/u/cos217/Assignment4/bdtBad3.c:381:9457:beg:0x40236c
++n
+/u/cos217/Assignment4/bdtBad3.c:383:9483:beg:0x402398
++n
+/u/cos217/Assignment4/bdtBad3.c:386:9541:beg:0x4023b4
++n
+/u/cos217/Assignment4/bdtBad3.c:387:9575:beg:0x4023c0
++n
+/u/cos217/Assignment4/bdtBad3.c:390:9623:beg:0x4023d4
++s
+BDT_rmPathAt (path=0x403770 "a/b", curr=0x4300a0) at bdtBad3.c:359
+/u/cos217/Assignment4/bdtBad3.c:359:9008:beg:0x4022a0
++n
+/u/cos217/Assignment4/bdtBad3.c:360:9033:beg:0x4022cc
++n
+/u/cos217/Assignment4/bdtBad3.c:362:9059:beg:0x4022f8
++n
+/u/cos217/Assignment4/bdtBad3.c:364:9086:beg:0x402304
++n
+/u/cos217/Assignment4/bdtBad3.c:365:9144:beg:0x40231c
++n
+/u/cos217/Assignment4/bdtBad3.c:368:9202:beg:0x402338
++s
+BDT_unlinkParentToChild (parent=0x430070, child=0x4300a0) at bdtBad3.c:201
+/u/cos217/Assignment4/bdtBad3.c:201:5417:beg:0x401f0c
++n
+/u/cos217/Assignment4/bdtBad3.c:203:5445:beg:0x401f38
++n
+/u/cos217/Assignment4/bdtBad3.c:204:5478:beg:0x401f4c
++n
+/u/cos217/Assignment4/bdtBad3.c:212:5626:beg:0x401f80
++print parent->child1
+$1 = (Node_T) 0x0
++print parent->child2
+$2 = (Node_T) 0x430190

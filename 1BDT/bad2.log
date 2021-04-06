@@ -1,0 +1,85 @@
++break main
+Breakpoint 1 at 0x4026c8: file bdt_client.c, line 22.
++run
+Starting program: /u/jcclb/cos217/assignment4/DirectoryFileTrees/1BDT/bdtBad2 
+
+Program received signal SIGSEGV, Segmentation fault.
+0x0000ffffbe646104 in strcat () from /lib64/libc.so.6
+Missing separate debuginfos, use: debuginfo-install glibc-2.17-222.sd7.aarch64
++where
+#0  0x0000ffffbe646104 in strcat () from /lib64/libc.so.6
+#1  0x0000000000401be0 in BDT_newNode (parent=0x0, dir=0x430050 "a") at bdtBad2.c:75
+#2  0x0000000000402028 in BDT_insertRestOfPath (path=0x4035c0 "a/b/c", parent=0x0) at bdtBad2.c:263
+#3  0x0000000000402178 in BDT_insertPath (path=0x4035c0 "a/b/c") at bdtBad2.c:316
+#4  0x000000000040283c in main () at bdt_client.c:40
++break main
+Breakpoint 1 at 0x4026c8: file bdt_client.c, line 22.
++run
+The program being debugged has been started already.
+Start it from the beginning? (y or n) Starting program: /u/jcclb/cos217/assignment4/DirectoryFileTrees/1BDT/bdtBad2 
+
+Breakpoint 1, main () at bdt_client.c:22
+/u/jcclb/cos217/assignment4/DirectoryFileTrees/1BDT/bdt_client.c:22:814:beg:0x4026c8
++n 15
+
+Program received signal SIGSEGV, Segmentation fault.
+0x0000ffffbe646104 in strcat () from /lib64/libc.so.6
++run 
+The program being debugged has been started already.
+Start it from the beginning? (y or n) Starting program: /u/jcclb/cos217/assignment4/DirectoryFileTrees/1BDT/bdtBad2 
+
+Breakpoint 1, main () at bdt_client.c:22
+/u/jcclb/cos217/assignment4/DirectoryFileTrees/1BDT/bdt_client.c:22:814:beg:0x4026c8
++n 7
+/u/jcclb/cos217/assignment4/DirectoryFileTrees/1BDT/bdt_client.c:33:1293:beg:0x402828
++n
+/u/jcclb/cos217/assignment4/DirectoryFileTrees/1BDT/bdt_client.c:40:1601:beg:0x402830
++s
+BDT_insertPath (path=0x4035c0 "a/b/c") at bdtBad2.c:311
+/u/cos217/Assignment4/bdtBad2.c:311:7968:beg:0x402118
++n
+/u/cos217/Assignment4/bdtBad2.c:313:7994:beg:0x402144
++n
+/u/cos217/Assignment4/bdtBad2.c:315:8051:beg:0x402160
++n
+/u/cos217/Assignment4/bdtBad2.c:316:8085:beg:0x40216c
++s
+BDT_insertRestOfPath (path=0x4035c0 "a/b/c", parent=0x0) at bdtBad2.c:228
+/u/cos217/Assignment4/bdtBad2.c:228:6057:beg:0x401f2c
++n
+/u/cos217/Assignment4/bdtBad2.c:229:6082:beg:0x401f34
++n
+/u/cos217/Assignment4/bdtBad2.c:232:6143:beg:0x401f38
++n
+/u/cos217/Assignment4/bdtBad2.c:236:6204:beg:0x401f40
++n
+/u/cos217/Assignment4/bdtBad2.c:238:6230:beg:0x401f6c
++n
+/u/cos217/Assignment4/bdtBad2.c:239:6252:beg:0x401f78
++n
+/u/cos217/Assignment4/bdtBad2.c:256:6695:beg:0x401fd0
++n
+/u/cos217/Assignment4/bdtBad2.c:257:6737:beg:0x401fe4
++n
+/u/cos217/Assignment4/bdtBad2.c:259:6788:beg:0x401ff8
++n
+/u/cos217/Assignment4/bdtBad2.c:260:6819:beg:0x402004
++n
+/u/cos217/Assignment4/bdtBad2.c:262:6857:beg:0x402018
++n
+/u/cos217/Assignment4/bdtBad2.c:263:6886:beg:0x40201c
++s
+BDT_newNode (parent=0x0, dir=0x430050 "a") at bdtBad2.c:64
+/u/cos217/Assignment4/bdtBad2.c:64:1914:beg:0x401b40
++n
+/u/cos217/Assignment4/bdtBad2.c:66:1939:beg:0x401b6c
++n
+/u/cos217/Assignment4/bdtBad2.c:67:1977:beg:0x401b78
++n
+/u/cos217/Assignment4/bdtBad2.c:70:2016:beg:0x401b8c
++n
+/u/cos217/Assignment4/bdtBad2.c:75:2113:beg:0x401bd0
++n
+
+Program received signal SIGSEGV, Segmentation fault.
+0x0000ffffbe646104 in strcat () from /lib64/libc.so.6

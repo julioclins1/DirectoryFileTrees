@@ -1,0 +1,50 @@
++break main
+Breakpoint 1 at 0x402740: file bdt_client.c, line 22.
++run
+Starting program: /u/jcclb/cos217/assignment4/DirectoryFileTrees/1BDT/bdtBad4 
+
+Breakpoint 1, main () at bdt_client.c:22
+/u/jcclb/cos217/assignment4/DirectoryFileTrees/1BDT/bdt_client.c:22:814:beg:0x402740
+Missing separate debuginfos, use: debuginfo-install glibc-2.17-222.sd7.aarch64
++n 25
+/u/jcclb/cos217/assignment4/DirectoryFileTrees/1BDT/bdt_client.c:63:2523:beg:0x402b94
++n 18
+/u/jcclb/cos217/assignment4/DirectoryFileTrees/1BDT/bdt_client.c:85:3494:beg:0x402eb4
++n
+/u/jcclb/cos217/assignment4/DirectoryFileTrees/1BDT/bdt_client.c:86:3542:beg:0x402ee8
++n
+/u/jcclb/cos217/assignment4/DirectoryFileTrees/1BDT/bdt_client.c:87:3592:beg:0x402f1c
++s
+BDT_toString () at bdtBad4.c:467
+/u/cos217/Assignment4/bdtBad4.c:467:11679:beg:0x402680
++n
+/u/cos217/Assignment4/bdtBad4.c:468:11730:beg:0x402688
++n
+/u/cos217/Assignment4/bdtBad4.c:470:11755:beg:0x40268c
++n
+/u/cos217/Assignment4/bdtBad4.c:473:11797:beg:0x4026a8
++n
+/u/cos217/Assignment4/bdtBad4.c:474:11829:beg:0x4026bc
++n
+/u/cos217/Assignment4/bdtBad4.c:476:11879:beg:0x4026d4
++n
+/u/cos217/Assignment4/bdtBad4.c:479:11990:beg:0x4026e8
++n
+/u/cos217/Assignment4/bdtBad4.c:480:12023:beg:0x4026f4
++n
+/u/cos217/Assignment4/bdtBad4.c:485:12100:beg:0x402710
++print result
+$1 = 0x430220 "0\001C"
++n
+/u/cos217/Assignment4/bdtBad4.c:488:12206:beg:0x402724
++n
+/u/cos217/Assignment4/bdtBad4.c:489:12231:beg:0x40272c
++n
+/u/cos217/Assignment4/bdtBad4.c:490:12249:beg:0x402730
++n
+main () at bdt_client.c:88
+/u/jcclb/cos217/assignment4/DirectoryFileTrees/1BDT/bdt_client.c:88:3635:beg:0x402f50
++n
+/u/jcclb/cos217/assignment4/DirectoryFileTrees/1BDT/bdt_client.c:89:3668:beg:0x402f6c
++print temp
+$2 = 0x430220 "0\001Ca\na/b\na/b/c\na/b/d\n"
