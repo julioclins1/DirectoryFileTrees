@@ -220,6 +220,7 @@ It should:
     - Establish a clearer contract in node.h, specifying who owns the
       returned string - the client or the implementation.
     - Change the implementation accordingly, either using v.1 or v.2.
+    - v.1 is preferred, since v.2 is identical to Node_toString
 
 
 Some functions are not called from outside modules:
@@ -232,6 +233,11 @@ Some functions are not called from outside modules:
 
 
 Node_linkChild should have local comments to explain various if
-statements. 
+statements.
+
+
+Some functions, such as Node_toString, Node_getParent,
+Node_getChild, fail to call CheckerDT to check invariants, possibly
+failing to report errors.
 
 ------------------------------------------------------------------------

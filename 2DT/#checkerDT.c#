@@ -1,17 +1,18 @@
+
 /*--------------------------------------------------------------------*/
 /* checkerDT.c                                                        */
 /* Author: Julio Lins and Rishabh Rout                                */
 /*--------------------------------------------------------------------*/
-
-/* CheckerDT is a module that is called at the beginning and end of
-   each function in dt.c (and its relatives), checking the directory
-   tree invariants */
 
 #include <assert.h>
 #include <stdio.h>
 #include <string.h>
 #include "dynarray.h"
 #include "checkerDT.h"
+
+
+static size_t uCount = 0;
+
 
 /* see checkerDT.h for specification */
 boolean CheckerDT_Node_isValid(Node_T n) {
@@ -58,9 +59,16 @@ boolean CheckerDT_Node_isValid(Node_T n) {
    return TRUE;
 }
 
-/* Performs a pre-order traversal of the tree rooted at n.
+/*
+   Performs a pre-order traversal of the tree rooted at n.
    Returns FALSE if a broken invariant is found and
-   returns TRUE otherwise. */
+   returns TRUE otherwise. Stores number of nodes in
+   *pCount
+
+   You may want to change this function's return type or
+   parameter list to facilitate constructing your checks.
+   If you do, you should update this function comment.
+*/
 static boolean CheckerDT_treeCheck(Node_T n) {
    size_t c;
    Node_T nParent;
@@ -68,6 +76,8 @@ static boolean CheckerDT_treeCheck(Node_T n) {
    Node_T nPrev;
 
    if(n != NULL) {
+
+      uCount++;
     
       /* Check on each non-root node: node must be valid */
       /* If not, pass that failure back up immediately */
@@ -81,6 +91,7 @@ static boolean CheckerDT_treeCheck(Node_T n) {
       for(c = 0; c < Node_getNumChildren(n); c++)
       {
          child = Node_getChild(n, c);
+
          nParent = Node_getParent(child);
 
          /* If node's child has a different parent, return FALSE */
@@ -150,5 +161,18 @@ boolean CheckerDT_isValid(boolean isInit, Node_T root, size_t count) {
 
    /* Now checks invariants recursively at each node from the root. */
    return CheckerDT_treeCheck(root);
+ 
+
+   /*
+   if(CheckerDT_treeCheck(root) == FALSE)
+      return FALSE;
+
+   if (count != uCount) {
+      fprintf(stderr, "Count is incorrect\n");
+      return FALSE;
+   }
+
+   return TRUE;
+   */
 
 }
