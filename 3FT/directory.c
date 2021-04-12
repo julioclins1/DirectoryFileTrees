@@ -163,14 +163,6 @@ size_t Dir_destroy(Dir_T dir) {
 }
 
 /* see directory.h for specification */
-const char* Dir_getPath(Dir_T dir) {
-
-   assert(CheckerFT_Dir_isValid(dir));
-
-   return dir->path;
-}
-
-/* see directory.h for specification */
 int Dir_compare(Dir_T dir1, Dir_T dir2) {
 
    assert(CheckerFT_Dir_isValid(dir1));
@@ -180,13 +172,12 @@ int Dir_compare(Dir_T dir1, Dir_T dir2) {
 }
 
 /* see directory.h for specification */
-size_t Dir_getNumFiles(Dir_T dir) {
+const char* Dir_getPath(Dir_T dir) {
 
    assert(CheckerFT_Dir_isValid(dir));
 
-   return DynArray_getLength(dir->fileC);
+   return dir->path;
 }
-
 
 /* see directory.h for specification */
 size_t Dir_getNumDir(Dir_T dir) {
@@ -194,6 +185,15 @@ size_t Dir_getNumDir(Dir_T dir) {
    assert(CheckerFT_Dir_isValid(dir));
 
    return DynArray_getLength(dir->dirC);
+}
+
+
+/* see directory.h for specification */
+size_t Dir_getNumFiles(Dir_T dir) {
+
+   assert(CheckerFT_Dir_isValid(dir));
+
+   return DynArray_getLength(dir->fileC);
 }
 
 /* see directory.h for specification */

@@ -19,45 +19,50 @@ typedef struct directory* Dir_T;
 
 
 /*
-   Given a parent node and a directory string dir, returns a new
-   Node_T or NULL if any allocation error occurs in creating
-   the node or its fields.
+   Given a parent directory and a string dir, returns a new Dir_T or 
+   NULL if any allocation error occurs in creating the directory or its
+   fields.
 
    The new structure is initialized to have its path as the parent's
-   path (if it exists) prefixed to the directory string parameter,
-   separated by a slash. It is also initialized with its parent link
-   as the parent parameter value, but the parent itself is not changed
-   to link to the new node.  The children links are initialized but
+   path (if it exists) prefixed to the dir string parameter, separated
+   by a slash. It is also initialized with its parent link as the 
+   parent parameter value, but the parent itself is not changed
+   to link to the new directory. The children links are initialized but
    do not point to any children.
 */
 
-Dir_T Dir_create(const char* dir, Node_T parent);
+Dir_T Dir_create(Dir_T parent, const char* dir);
 
 /*
-  Destroys the entire hierarchy of nodes rooted at n,
-  including n itself.
+  Destroys the entire hierarchy of directories and files rooted at dir,
+  including dir itself.
 
-  Returns the number of nodes destroyed.
+  Returns the number of directories and files destroyed.
 */
-size_t Dir_destroy(Node_T n);
+size_t Dir_destroy(Dir_T dir);
 
 
 /*
-  Compares node1 and node2 based on their paths.
-  Returns <0, 0, or >0 if node1 is less than,
-  equal to, or greater than node2, respectively.
+  Compares dir1 and dir2 based on their paths.
+  Returns <0, 0, or >0 if dir1 is less than,
+  equal to, or greater than dir2, respectively.
 */
-int Dir_compare(Node_T node1, Node_T node2);
+int Dir_compare(Node_T dir1, Node_T dir2);
 
 /*
-   Returns n's path.
+   Returns dir's path.
 */
-const char* Dir_getPath(Node_T n);
+const char* Dir_getPath(Dir_T n);
 
 /*
-  Returns the number of child directories n has.
+  Returns the number of child directories dir has.
 */
-size_t Node_getNumChildren(Node_T n);
+size_t Dir_getNumDir(Dir_T dir);
+
+/*
+  Returns the number of child files dir has.
+*/
+size_t Dir_getNumFiles(Dir_T dir);
 
 /*
    Returns the child node of n with identifier childID, if one exists,
@@ -66,9 +71,10 @@ size_t Node_getNumChildren(Node_T n);
 Dir_T Node_getChild(Node_T n, size_t childID);
 
 /*
-   Returns the parent node of n, if it exists, otherwise returns NULL
+   Returns the parent directory of dir, if it exists, otherwise 
+   returns NULL
 */
-Dir_T Node_getParent(Node_T n);
+Dir_T Dir_getParent(Dir_T dir);
 
 /*
   Makes child a child of parent, if possible, and returns SUCCESS.
@@ -92,12 +98,12 @@ int Node_unlinkChild(Node_T parent, Node_T child);
 
 
 /*
-  Returns a string representation for n, 
+  Returns a string representation for dir, 
   or NULL if there is an allocation error.
 
   Allocates memory for the returned string,
   which is then owned by client!
 */
-char* Dir_toString(Node_T n);
+char* Dir_toString(Node_T dir);
 
 #endif

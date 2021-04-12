@@ -178,12 +178,18 @@ could improve:
       follow-up condition.
     - Could have added local comments to explain implementation.
     - Additional suggestions in nodeGood.c section.
+    - Furthermore, its function comment does not cover all possible
+      return values. Specifically, it does not mention CONFLICTING_PATH
+      as such.
 
 DT_rmPath would become more efficient if:
     - it checked whether strcmp(path, Node_getPath(curr)) == 0 instead
       of curr == NULL. That in turn would eliminate one if statement in
       DT_rmPathAt.
     - Additional suggestions in nodeGood.c section.
+
+DT_rmPath could be expanded to check if the path exists to
+eliminate the need of having both DT_rmPathAt and DT_removePathFrom.
 
 Some lines of code in DT_toString are too long. Furthermore, it could
 have added local comments to explain use of DynArray_map.
@@ -197,14 +203,12 @@ See additional critique of DT_[un]linkParentToChild below.
 ------------------------------------------------------------------------
 nodeGood.c / node.h:
 
-node.h interface could have been extended to deal with removal and
-insertion of paths. This would:
-    - further simplify dt.c (eliminating the DT_[un]linkParentToChild
-      functions, and simplifying DT_rmPath and DT_insertPath).
+node.h interface could have been extended to deal with removal of paths.
+       This would:
+    - further simplify dt.c (eliminating the DT_linkParentToChild
+      function, and simplifying DT_rmPath).
     - Reinforce weak coupling and strong cohesion, since as it is there
       is a lot of back and forth between DT and Node modules.
-    - Even the traversals of the tree (as in DT_traversePathFrom) could
-      have been dealt with by node.c, for the same reasons.
 
 
 node.h interface's functions do not have a consistent parameter order.
@@ -220,6 +224,7 @@ It should:
     - Establish a clearer contract in node.h, specifying who owns the
       returned string - the client or the implementation.
     - Change the implementation accordingly, either using v.1 or v.2.
+    - v.1 is preferred, since v.2 is identical to Node_toString
 
 
 Some functions are not called from outside modules:
@@ -232,6 +237,14 @@ Some functions are not called from outside modules:
 
 
 Node_linkChild should have local comments to explain various if
-statements. 
+statements.
+
+DT_preOrderTraversal should have more descriptive names for local
+variables and parameters, instead of just letters.
+
+
+Some functions, such as Node_toString, Node_getParent,
+Node_getChild, fail to call CheckerDT to check invariants, possibly
+failing to report errors.
 
 ------------------------------------------------------------------------
