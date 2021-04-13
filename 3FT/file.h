@@ -6,15 +6,19 @@
 #ifndef FILE_INCLUDED
 #define FILE_INCLUDED
 
+#include "defs.h"
+
 #include <stddef.h>
 #include "a4def.h"
 #include "directory.h"
+
+
 
 /*
    a File_T is an object that contains a path payload and references to
    the file's parent, contents, and length.
 */
-typedef struct file* File_T;
+/* typedef struct file* File_T; */
 
 
 /*
@@ -25,13 +29,12 @@ typedef struct file* File_T;
 
    The parent is not changed to link to the file.
 */
-
-File_T File_create(Dir_T parent, char *path, void *contents,
+File_T File_create(Dir_T parent, const char *path, void *contents,
                    size_t length);
 /*
   Frees File_T file
 */
-size_t File_destroy(File_T file);
+void File_destroy(File_T file);
 
 
 /*
@@ -49,7 +52,7 @@ const char* File_getPath(File_T file);
 /*
    Returns the parent directory of file
 */
-File_T File_getParent(File_T file);
+Dir_T File_getParent(File_T file);
 
 /* 
    Returns the contents associated with file
@@ -73,7 +76,7 @@ void *File_replaceContents(File_T file, void* newContents,
    Returns the length in bytes associated with the
    contents in file
 */
-File_T File_getLength(File_T file);
+size_t File_getLength(File_T file);
 
 /*
   Returns a string representation for file, 

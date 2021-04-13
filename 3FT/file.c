@@ -21,7 +21,7 @@ struct file {
    char* path;
 
    /* the parent directory of this file */
-   Node_T parent;
+   Dir_T parent;
 
    /* the contents of this file */
    void* contents;
@@ -33,7 +33,7 @@ struct file {
 /* Returns a defensive copy of path or NULL
    if there is an allocation error
 */
-static char *File_copyPath(char *path) {
+static char *File_copyPath(const char *path) {
 
    char *copy;
    
@@ -48,8 +48,10 @@ static char *File_copyPath(char *path) {
 
 
 /* see file.h for specification */
-File_T File_create(Dir_T parent, char *path, void *contents,
+File_T File_create(Dir_T parent, const char *path, void *contents,
                    size_t length) {
+
+   File_T new_file;
    
    assert(CheckerFT_Dir_isValid(parent));
    assert(path != NULL);
@@ -76,18 +78,17 @@ File_T File_create(Dir_T parent, char *path, void *contents,
 /* see file.h for specification */
 void File_destroy(File_T file) {
 
-   assert(CheckerFT_File_isValid(file));
+   assert(file != NULL);
    
    free(file->path);
-   free(file->contents);
    free(file);
 }
 
 /* see file.h for specification*/
 int File_compare(File_T file1, File_T file2) {
 
-   assert(CheckerFT_File_isValid(file1));
-   assert(CheckerFT_File_isValid(file2));
+   assert(file1 != NULL);
+   assert(file2 != NULL);
 
    return strcmp(file1->path, file2->path);
    
@@ -96,7 +97,7 @@ int File_compare(File_T file1, File_T file2) {
 /* see file.h for specification */
 const char* File_getPath(File_T file) {
 
-   assert(CheckerFT_File_isValid(file));
+   assert(file != NULL);
 
    return file->path;
 }
@@ -104,7 +105,7 @@ const char* File_getPath(File_T file) {
 /* see file.h for specification */
 Dir_T File_getParent(File_T file) {
 
-   assert(CheckerFT_File_isValid(file));
+   assert(file != NULL);
 
    return file->parent;
 
@@ -113,7 +114,7 @@ Dir_T File_getParent(File_T file) {
 /* see file.h for specification */
 void *File_getContents(File_T file) {
 
-   assert(CheckerFT_File_isValid(file));
+   assert(file != NULL);
 
    return file->contents;
 }
@@ -124,7 +125,7 @@ void *File_replaceContents(File_T file, void* newContents,
 
    void* oldContents;
 
-   assert(CheckerFT_File_isValid(file));
+   assert(file != NULL);
 
    oldContents = file->contents;
 
@@ -137,7 +138,7 @@ void *File_replaceContents(File_T file, void* newContents,
 /* see file.h for specification */
 size_t File_getLength(File_T file) {
 
-   assert(CheckerFT_File_isValid(file));
+   assert(file != NULL);
 
    return file->length;
 }
@@ -145,7 +146,7 @@ size_t File_getLength(File_T file) {
 /* see file.h for specification */
 char* File_toString(File_T file) {
    
-   assert(CheckerFT_File_isValid(file));
+   assert(file != NULL);
 
    return File_copyPath(file->path);
 }

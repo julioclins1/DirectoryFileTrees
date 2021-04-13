@@ -6,16 +6,19 @@
 #ifndef DIRECTORY_INCLUDED
 #define DIRECTORY_INCLUDED
 
+#include "defs.h"
+
 #include <stddef.h>
 #include "a4def.h"
 #include "file.h"
+
 
 /*
    a Dir_T is an object that contains a path payload and references to
    the directories's parent (if it exists) and children, both files and
    subdirectories (if they exist).
 */
-typedef struct directory* Dir_T;
+/* typedef struct directory* Dir_T; */
 
 
 /*
@@ -47,7 +50,7 @@ size_t Dir_destroy(Dir_T dir);
   Returns <0, 0, or >0 if dir1 is less than,
   equal to, or greater than dir2, respectively.
 */
-int Dir_compare(Node_T dir1, Node_T dir2);
+int Dir_compare(Dir_T dir1, Dir_T dir2);
 
 /*
    Returns dir's path.
@@ -64,11 +67,22 @@ size_t Dir_getNumDir(Dir_T dir);
 */
 size_t Dir_getNumFiles(Dir_T dir);
 
+int Dir_hasDir(Dir_T parent, const char* path, size_t* childID);
+
+int Dir_hasFile(Dir_T parent, const char* path, size_t* childID);
+
+
 /*
    Returns the child node of n with identifier childID, if one exists,
    otherwise returns NULL.
 */
-Dir_T Node_getChild(Node_T n, size_t childID);
+Dir_T Dir_getDir(Dir_T parent, size_t childID);
+
+/*
+   Returns the child node of n with identifier childID, if one exists,
+   otherwise returns NULL.
+*/
+File_T Dir_getFile(Dir_T parent, size_t childID);
 
 /*
    Returns the parent directory of dir, if it exists, otherwise 
@@ -86,7 +100,19 @@ Dir_T Dir_getParent(Dir_T dir);
   * parent is unable to allocate memory to store new child link,
     in which case returns MEMORY_ERROR
  */
-int Node_linkChild(Node_T parent, Node_T child);
+int Dir_linkDir(Dir_T parent, Dir_T child);
+
+/*
+  Makes child a child of parent, if possible, and returns SUCCESS.
+  This is not possible in the following cases:
+  * child's path is not parent's path + / + directory,
+    in which case returns PARENT_CHILD_ERROR
+  * parent already has a child with child's path,
+    in which case returns ALREADY_IN_TREE
+  * parent is unable to allocate memory to store new child link,
+    in which case returns MEMORY_ERROR
+ */
+int Dir_linkFile(Dir_T parent, File_T child);
 
 /*
   Unlinks node parent from its child node child. child is unchanged.
@@ -94,8 +120,15 @@ int Node_linkChild(Node_T parent, Node_T child);
   Returns PARENT_CHILD_ERROR if child is not a child of parent,
   and SUCCESS otherwise.
  */
-int Node_unlinkChild(Node_T parent, Node_T child);
+int Dir_unlinkDir(Dir_T parent, Dir_T child);
 
+/*
+  Unlinks node parent from its child node child. child is unchanged.
+
+  Returns PARENT_CHILD_ERROR if child is not a child of parent,
+  and SUCCESS otherwise.
+ */
+int Dir_unlinkFile(Dir_T parent, File_T child);
 
 /*
   Returns a string representation for dir, 
@@ -104,6 +137,6 @@ int Node_unlinkChild(Node_T parent, Node_T child);
   Allocates memory for the returned string,
   which is then owned by client!
 */
-char* Dir_toString(Node_T dir);
+char* Dir_toString(Dir_T dir);
 
 #endif

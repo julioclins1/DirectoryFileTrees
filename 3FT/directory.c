@@ -72,13 +72,13 @@ Dir_T Dir_create(Dir_T parent, const char* dir) {
 
    Dir_T new_dir;
 
-   assert(parent == NULL || CheckerFT_Dir_is_Valid(parent));
+   assert(parent == NULL || CheckerFT_Dir_isValid(parent));
    assert(dir != NULL);
 
    new_dir = (Dir_T)malloc(sizeof(struct directory));
    
    if (new_dir == NULL) {
-      assert(dirParent == NULL || CheckerFT_Dir_isValid(dirParent));
+      assert(parent == NULL || CheckerFT_Dir_isValid(parent));
       return NULL;
    }
 
@@ -133,30 +133,30 @@ size_t Dir_destroy(Dir_T dir) {
    size_t uFileLen;
 
    
-   assert(CheckerFT_Dir_isValid(dir));
+   assert(dir != NULL);
 
-   uDirLen = DynArray_getLength(d->dirC);
-   uFileLen = DynArray_getLength(d->fileC);
+   uDirLen = DynArray_getLength(dir->dirC);
+   uFileLen = DynArray_getLength(dir->fileC);
 
 
    for (i = 0; i < uDirLen; i++) {
 
-      dirChild = DynArray_get(d->dirChild, i);
+      dirChild = DynArray_get(dir->dirC, i);
       count += Dir_destroy(dirChild);
    }
 
    for (i = 0; i < uFileLen; i++) {
 
-      fileChild = DynArray_get(d->fileChild, i);
+      fileChild = DynArray_get(dir->fileC, i);
       File_destroy(fileChild);
       count++;
    }
 
-   DynArray_free(d->daDirChildren);
-   DynArray_free(d->daFileChildren);
+   DynArray_free(dir->dirC);
+   DynArray_free(dir->fileC);
 
-   free(d->pcPath);
-   free(d);
+   free(dir->path);
+   free(dir);
    count++;
 
    return count;
@@ -165,8 +165,8 @@ size_t Dir_destroy(Dir_T dir) {
 /* see directory.h for specification */
 int Dir_compare(Dir_T dir1, Dir_T dir2) {
 
-   assert(CheckerFT_Dir_isValid(dir1));
-   assert(CheckerFT_Dir_isValid(dir2));
+   assert(dir1 != NULL);
+   assert(dir2 != NULL);
 
    return strcmp(dir1->path, dir2->path);
 }
@@ -174,15 +174,15 @@ int Dir_compare(Dir_T dir1, Dir_T dir2) {
 /* see directory.h for specification */
 const char* Dir_getPath(Dir_T dir) {
 
-   assert(CheckerFT_Dir_isValid(dir));
-
+   assert(dir != NULL);
+   
    return dir->path;
 }
 
 /* see directory.h for specification */
 size_t Dir_getNumDir(Dir_T dir) {
 
-   assert(CheckerFT_Dir_isValid(dir));
+   assert(dir != NULL);
 
    return DynArray_getLength(dir->dirC);
 }
@@ -191,7 +191,7 @@ size_t Dir_getNumDir(Dir_T dir) {
 /* see directory.h for specification */
 size_t Dir_getNumFiles(Dir_T dir) {
 
-   assert(CheckerFT_Dir_isValid(dir));
+   assert(dir != NULL);
 
    return DynArray_getLength(dir->fileC);
 }
@@ -203,10 +203,10 @@ int Dir_hasDir(Dir_T parent, const char* path, size_t* childID) {
    int result;
    Dir_T checker;
 
-   assert(CheckerFT_Dir_isValid(parent));
+   assert(parent != NULL);
    assert(path != NULL);
 
-   checker = Dir_create(path, NULL);
+   checker = Dir_create(NULL, path);
    if(checker == NULL)
       return -1;
 
@@ -230,16 +230,16 @@ int Dir_hasFile(Dir_T parent, const char* path, size_t* childID) {
    Dir_T checkerParent;
    File_T checker;
 
-   assert(CheckerFT_Dir_isValid(parent));
+   assert(parent != NULL);
    assert(path != NULL);
 
-   checkerDir = Dir_create(path, NULL);
-   if (checkerDir == NULL)
+   checkerParent = Dir_create(NULL, path);
+   if (checkerParent == NULL)
       return -1;
 
-   checker = File_create(checkerDir, path, NULL, 0);
+   checker = File_create(checkerParent, path, NULL, 0);
    if (checker == NULL) {
-      free(checkerDir)
+      free(checkerParent);
       return -1;
    }
 
@@ -247,7 +247,7 @@ int Dir_hasFile(Dir_T parent, const char* path, size_t* childID) {
                              (int (*)(const void*, const void*))
                              File_compare);
 
-   (void) Dir_destroy(checkerDir);
+   (void) Dir_destroy(checkerParent);
    (void) File_destroy(checker);
 
    if (childID != NULL)
@@ -257,9 +257,9 @@ int Dir_hasFile(Dir_T parent, const char* path, size_t* childID) {
 }
 
 /* see directory.h for specification */
-Dir_T Dir_getDir(Dir_T dir, size_T childID) {
+Dir_T Dir_getDir(Dir_T dir, size_t childID) {
 
-   assert(CheckerFT_Dir_isValid(dir));
+   assert(dir != NULL);
 
    if (DynArray_getLength(dir->dirC) > childID)
       return DynArray_get(dir->dirC, childID);
@@ -268,12 +268,12 @@ Dir_T Dir_getDir(Dir_T dir, size_T childID) {
 }
 
 /* see directory.h for specification */
-File_T Dir_getFile(Dir_T dir, size_T childID) {
+File_T Dir_getFile(Dir_T dir, size_t childID) {
 
-   assert(CheckerFT_Dir_isValid(dir));
+   assert(dir != NULL);
 
    if (DynArray_getLength(dir->fileC) > childID)
-      return DynArray_get(dir->fileC, chilID);
+      return DynArray_get(dir->fileC, childID);
 
    return NULL;
 }
@@ -281,12 +281,163 @@ File_T Dir_getFile(Dir_T dir, size_T childID) {
 /* see directory.h for specification */
 Dir_T Dir_getParent(Dir_T dir) {
 
-   assert(CheckerFT_Dir_isValid(dir));
+   assert (dir != NULL);
 
    return dir->parent;
 }
 
+/* see directory.h for specification */
+int Dir_linkDir(Dir_T parent, Dir_T child) {
+
+   size_t i;
+   char* rest;
+   enum {EQUAL};
+   
+   assert(parent != NULL);
+   assert(child != NULL);
+   assert(CheckerFT_Dir_isValid(parent));
+   assert(CheckerFT_Dir_isValid(child));
+
+   if (Dir_hasDir(parent, child->path, NULL) == TRUE)
+      return ALREADY_IN_TREE;
+
+   if (Dir_hasFile(parent, child->path, NULL) == TRUE)
+      return ALREADY_IN_TREE;
+
+   i = strlen(parent->path);
+   if(strncmp(child->path, parent->path, i) != EQUAL)
+      return PARENT_CHILD_ERROR;
+
+   rest = child->path + i;
+   if (strlen(child->path) >= i && rest[0] != '/')
+      return PARENT_CHILD_ERROR;
+
+   rest++;
+   if (strstr(rest, "/") != NULL)
+      return PARENT_CHILD_ERROR;
+
+   child->parent = parent;
+
+   if (DynArray_bsearch(parent->dirC, child, &i,
+                        (int (*)(const void*, const void*))
+                        Dir_compare) == 1) {
+      return ALREADY_IN_TREE;
+   }
+
+   if (DynArray_addAt(parent->dirC, i, child) == TRUE)
+      return SUCCESS;
+
+   return PARENT_CHILD_ERROR;
+}
+
+/* see directory.h for specification */
+int Dir_linkFile(Dir_T parent, File_T child) {
+
+   size_t i;
+   const char* rest;
+   const char* childPath;
+   enum {EQUAL};
+   
+   assert(parent != NULL);
+   assert(child != NULL);
+   assert(CheckerFT_Dir_isValid(parent));
+   
+
+   childPath = File_getPath(child);
+
+   /* If parent's path is not a prefix of child's path */
+   i = strlen(parent->path);
+   if(strncmp(childPath, parent->path, i) != EQUAL)
+      return PARENT_CHILD_ERROR;
+
+   /* if parent's path and rest of child's path are not
+      separated by '/' */
+   rest = childPath + i;
+   if (strlen(childPath) >= i && rest[0] != '/')
+      return PARENT_CHILD_ERROR;
+
+   /* check that there are no more subdirectories */
+   rest++;
+   if (strstr(rest, "/") != NULL)
+      return PARENT_CHILD_ERROR;
+
+ if (DynArray_bsearch(parent->fileC, child, &i,
+                        (int (*)(const void*, const void*))
+                        File_compare) == 1) {
+      return ALREADY_IN_TREE;
+   }
+
+   if (DynArray_addAt(parent->fileC, i, child) == TRUE) {
+      assert(CheckerFT_File_isValid(child));
+      return SUCCESS;
+   }
+
+   return PARENT_CHILD_ERROR;
+}
+
+/* see directory.h for specification */
+int Dir_unlinkDir(Dir_T parent, Dir_T child) {
+
+   size_t childID;
+   
+   assert(parent != NULL);
+   assert(child != NULL);
+   assert(CheckerFT_Dir_isValid(parent));
+   assert(CheckerFT_Dir_isValid(child));
 
 
+   if(DynArray_bsearch(parent->dirC, child, &childID,
+                       (int (*)(const void*, const void*))
+                       Dir_compare) == 0) {
 
+      assert(CheckerFT_Dir_isValid(parent));
+      assert(CheckerFT_Dir_isValid(child));
+      return PARENT_CHILD_ERROR;
+   }
+
+   (void) DynArray_removeAt(parent->dirC, childID);
+
+   assert(CheckerFT_Dir_isValid(parent));
+   assert(CheckerFT_Dir_isValid(child));
+   return SUCCESS;
+
+}
+
+/* see directory.h for specification */
+int Dir_unlinkFile(Dir_T parent, File_T child) {
+
+   size_t childID;
+   
+   assert(parent != NULL);
+   assert(child != NULL);
+   assert(CheckerFT_Dir_isValid(parent));
+   assert(CheckerFT_File_isValid(child));
+
+
+   if(DynArray_bsearch(parent->fileC, child, &childID,
+                       (int (*)(const void*, const void*))
+                       File_compare) == 0) {
+
+      assert(CheckerFT_Dir_isValid(parent));
+      assert(CheckerFT_File_isValid(child));
+      return PARENT_CHILD_ERROR;
+   }
+
+   (void) DynArray_removeAt(parent->fileC, childID);
+
+   assert(CheckerFT_Dir_isValid(parent));
+   return SUCCESS;
+}
          
+/* see directory.h for specification */
+char* Dir_toString(Dir_T dir) {
+   char* copyPath;
+
+   assert(dir != NULL);
+
+   copyPath = malloc(strlen(dir->path)+1);
+   if(copyPath == NULL)
+      return NULL;
+
+   return strcpy(copyPath, dir->path);
+}
