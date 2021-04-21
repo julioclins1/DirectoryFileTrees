@@ -1,24 +1,20 @@
 /*--------------------------------------------------------------------*/
 /* directory.h                                                        */
-/* Author: Julio Lins and Rishabh Rout                                */
+/* Authors: Julio Lins and Rishabh Rout                               */
 /*--------------------------------------------------------------------*/
 
 #ifndef DIRECTORY_INCLUDED
 #define DIRECTORY_INCLUDED
 
-#include "defs.h"
-
 #include <stddef.h>
 #include "a4def.h"
-#include "file.h"
-
 
 /*
    a Dir_T is an object that contains a path payload and references to
-   the directories's parent (if it exists) and children, both files and
+   the directory's parent (if it exists) and children, both files and
    subdirectories (if they exist).
 */
-/* typedef struct directory* Dir_T; */
+typedef struct directory* Dir_T;
 
 
 /*
@@ -55,34 +51,47 @@ int Dir_compare(Dir_T dir1, Dir_T dir2);
 /*
    Returns dir's path.
 */
-const char* Dir_getPath(Dir_T n);
+const char* Dir_getPath(Dir_T dir);
 
 /*
-  Returns the number of child directories dir has.
+  Returns the number of children of  parent dir if
+  type is neither 0 (DIR) nor 1 (FILES).
+
+  If type is 0 (DIR), returns number of child directories.
+  If type is 1 (FILES), returns number of child files.
 */
-size_t Dir_getNumDir(Dir_T dir);
+size_t Dir_getNumChildren(Dir_T dir, int type);
+
+
+/* If type is 0 (DIR), returns 1 if parent has a child directory
+   whose full path is path, 0 if it does not have such a child,
+   and -1 if there is an allocation error during search.
+
+   If type is 1 (FILES), it works analogously for a child file
+
+   If type is neither 0 nor 1, it works analogously, but checking if
+   there is either a child directory or a child file with path
+
+   Furthermore, if parent does have such a child, and childID is not
+   NULL, it stores the child's indentifier in *childID. If parent
+   does not have such a child, store the identifier that such a child
+   would have in *childID.
+
+ */
+int Dir_hasChild(Dir_T parent, const char* path, size_t* childID,
+                 int type);
+
 
 /*
-  Returns the number of child files dir has.
+  If type is 0 (DIR), returns the Dir_T child directory of parent
+  with identifier childID, if it exists.
+
+  If type is 1 (FILES), returns the File_T child file of parent
+  with identifier childID, if it exists.
+
+  If the respective child does not exist, returns NULL.
 */
-size_t Dir_getNumFiles(Dir_T dir);
-
-int Dir_hasDir(Dir_T parent, const char* path, size_t* childID);
-
-int Dir_hasFile(Dir_T parent, const char* path, size_t* childID);
-
-
-/*
-   Returns the child node of n with identifier childID, if one exists,
-   otherwise returns NULL.
-*/
-Dir_T Dir_getDir(Dir_T parent, size_t childID);
-
-/*
-   Returns the child node of n with identifier childID, if one exists,
-   otherwise returns NULL.
-*/
-File_T Dir_getFile(Dir_T parent, size_t childID);
+void* Dir_getChild(Dir_T parent, size_t childID, int type);
 
 /*
    Returns the parent directory of dir, if it exists, otherwise 
@@ -90,45 +99,28 @@ File_T Dir_getFile(Dir_T parent, size_t childID);
 */
 Dir_T Dir_getParent(Dir_T dir);
 
-/*
-  Makes child a child of parent, if possible, and returns SUCCESS.
-  This is not possible in the following cases:
-  * child's path is not parent's path + / + directory,
-    in which case returns PARENT_CHILD_ERROR
-  * parent already has a child with child's path,
-    in which case returns ALREADY_IN_TREE
-  * parent is unable to allocate memory to store new child link,
-    in which case returns MEMORY_ERROR
- */
-int Dir_linkDir(Dir_T parent, Dir_T child);
+/* 
+   If type is 0 (DIR), makes child a child directory of parent, if
+   possible, and returns SUCCESS.
+   If type is 1 (FILES), makes child a child file of parent, if
+   possible, and returns SUCCESS.
+
+   If unable to link child and parent, returns PARENT_CHILD_ERROR.
+
+   If parent already has a child with child's path, returns
+   ALREADY_IN_TREE
+*/
+int Dir_linkChild(Dir_T parent, void* child, int type);
 
 /*
-  Makes child a child of parent, if possible, and returns SUCCESS.
-  This is not possible in the following cases:
-  * child's path is not parent's path + / + directory,
-    in which case returns PARENT_CHILD_ERROR
-  * parent already has a child with child's path,
-    in which case returns ALREADY_IN_TREE
-  * parent is unable to allocate memory to store new child link,
-    in which case returns MEMORY_ERROR
- */
-int Dir_linkFile(Dir_T parent, File_T child);
+  If type is 0 (DIR), unlinks parent from its child directory
+  If type is 1 (FILES), unlinks parent from its child file
+  In both cases, child is unchanged.
 
-/*
-  Unlinks node parent from its child node child. child is unchanged.
-
-  Returns PARENT_CHILD_ERROR if child is not a child of parent,
+  Returns PARENT_CHILD_ERROR if child is not a child of parent
   and SUCCESS otherwise.
  */
-int Dir_unlinkDir(Dir_T parent, Dir_T child);
-
-/*
-  Unlinks node parent from its child node child. child is unchanged.
-
-  Returns PARENT_CHILD_ERROR if child is not a child of parent,
-  and SUCCESS otherwise.
- */
-int Dir_unlinkFile(Dir_T parent, File_T child);
+int Dir_unlinkChild(Dir_T parent, void* child, int type);
 
 /*
   Returns a string representation for dir, 

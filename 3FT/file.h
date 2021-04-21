@@ -1,24 +1,20 @@
 /*--------------------------------------------------------------------*/
 /* file.h                                                             */
-/* Author: Julio Lins and Rishabh Rout                                */
+/* Authors: Julio Lins and Rishabh Rout                               */
 /*--------------------------------------------------------------------*/
 
 #ifndef FILE_INCLUDED
 #define FILE_INCLUDED
 
-#include "defs.h"
-
+#include "directory.h"
 #include <stddef.h>
 #include "a4def.h"
-#include "directory.h"
-
-
 
 /*
    a File_T is an object that contains a path payload and references to
    the file's parent, contents, and length.
 */
-/* typedef struct file* File_T; */
+typedef struct file* File_T;
 
 
 /*
@@ -50,7 +46,7 @@ int File_compare(File_T file1, File_T file2);
 const char* File_getPath(File_T file);
 
 /*
-   Returns the parent directory of file
+   Returns the parent Dir_T directory of file
 */
 Dir_T File_getParent(File_T file);
 
@@ -63,7 +59,7 @@ void *File_getContents(File_T file);
 
 /* 
    Replaces the contents of file with newContents,
-   updating the length stored in file accordingly.
+   updating the length stored in file to newLength.
 
    Returns the old contents.
 

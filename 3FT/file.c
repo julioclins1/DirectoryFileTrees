@@ -1,15 +1,9 @@
 /*--------------------------------------------------------------------*/
 /* file.c                                                             */
-/* Author: Julio Lins and Rishabh Rout                                */
+/* Authors: Julio Lins and Rishabh Rout                               */
 /*--------------------------------------------------------------------*/
 
-#include <stdlib.h>
-#include <string.h>
-#include <assert.h>
-#include <stdio.h>
-
-#include "dynarray.h"
-#include "file.h"
+#include "defs.h"
 #include "checkerFT.h"
 
 /*
@@ -43,7 +37,9 @@ static char *File_copyPath(const char *path) {
    if (copy == NULL)
       return NULL;
 
-   return strcpy(copy, path);
+   *copy = '\0';
+
+  return strcpy(copy, path);
 }
 
 
@@ -58,7 +54,7 @@ File_T File_create(Dir_T parent, const char *path, void *contents,
    
    new_file = (File_T)malloc(sizeof(struct file));
    if (new_file == NULL) {
-      CheckerFT_Dir_isValid(parent);
+      assert(CheckerFT_Dir_isValid(parent));
       return NULL;
    }
 

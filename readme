@@ -13,7 +13,7 @@ Rishabh Rout
 ------------------------------------------------------------------------
 How many late days are you using on this assignment?
 
-
+1
 
 ------------------------------------------------------------------------
 Student 1: What authorized sources of information did you use to
@@ -21,7 +21,19 @@ complete the assignment? COPY THE LIST of authorized sources of
 information given in the "Policies" web page to this section of the
 readme file, and edit it as appropriate.
 
+The course's lectures.
 
+The course's precepts.
+
+The course's website.
+
+Documents that are referenced directly by the course's website.
+Such documents include the course's lecture slides and precept handouts.
+
+The man pages on the armlab cluster.
+
+The course's current staff members outside of class time through
+office hours.
 
 ------------------------------------------------------------------------
 Student 2: What authorized sources of information did you use to
@@ -29,7 +41,7 @@ complete the assignment? COPY THE LIST of authorized sources of
 information given in the "Policies" web page to this section of the
 readme file, and edit it as appropriate.
 
-
+Same.
 
 ------------------------------------------------------------------------
 Student 1: What unauthorized sources of information did you use to
@@ -43,7 +55,7 @@ nature of the interaction, may additionally require the interaction
 being reported to the Committee on Discipline. Write "None" if you used
 no unauthorized sources of information.
 
-
+None.
 
 ------------------------------------------------------------------------
 Student 2: What unauthorized sources of information did you use to
@@ -57,19 +69,19 @@ nature of the interaction, may additionally require the interaction
 being reported to the Committee on Discipline. Write "None" if you used
 no unauthorized sources of information.
 
-
+None.
 
 ------------------------------------------------------------------------
 Student 1: What is your assessment of the assignment? Was it helpful?
 Was it fun?
 
-
+Super fun. I learned a lot. But it was a bit too long.
 
 ------------------------------------------------------------------------
 Student 2: What is your assessment of the assignment? Was it helpful?
 Was it fun?
 
-
+Same.
 
 ------------------------------------------------------------------------
 (optional) What information can you provide about your submission that
@@ -84,7 +96,7 @@ your disagreements with them? Copy the splint warnings here, and
 express your disagreement after each warning. If there are no
 warnings, then write "None."
 
-
+None.
 
 ------------------------------------------------------------------------
 What warnings does critTer generate on checkerDT.c, and what are your
@@ -92,7 +104,7 @@ disagreements with them? Copy the critTer warnings here, and express
 your disagreement after each warning. If there are no warnings, then
 write "None."
 
-
+None.
 
 ------------------------------------------------------------------------
 What warnings does splint generate on your Part 3 code, and what are
@@ -100,7 +112,7 @@ your disagreements with them? Copy the splint warnings here, and
 express your disagreement after each warning. If there are no
 warnings, then write "None."
 
-
+None.
 
 ------------------------------------------------------------------------
 What warnings does critTer generate on your Part 3 code, and what are
@@ -108,7 +120,53 @@ your disagreements with them? Copy the critTer warnings here, and
 express your disagreement after each warning. If there are no
 warnings, then write "None."
 
+Checking ft.c
 
+   ft.c: line 226: medium priority:
+      Do you want to validate 'contents' through an assert?
+
+   ft.c: line 378: medium priority:
+      Do you want to validate 'newContents' through an assert?
+
+Contents and newContents can be NULL, so we should not assert that they
+are not.
+
+-----------------------------------------------------------
+Checking traverser.c
+
+   traverser.c: line 263: medium priority:
+      Do you want to validate 'str' through an assert?
+
+   traverser.c: line 275: medium priority:
+      Do you want to validate 'str' through an assert?
+
+The line that follows it is:
+if (str != NULL)
+
+So even though we do not assert that str is not NULL, the
+if statement's code will not follow in case it is NULL.
+
+-----------------------------------------------------------
+
+directory.c: line 197: medium priority:
+   Do you want to validate 'childID' through an assert?
+
+As explained in directory.h, if the client does not want to
+store the child's identifier in childID, it can pass NULL.
+So childID can be NULL and there is an if statement checking
+whether it is not NULL, in which case it assings the ID to *childID
+
+------------------------------------------------------------
+
+Checking file.c
+
+   file.c: line 48: medium priority:
+      Do you want to validate 'contents' through an assert?
+
+   file.c: line 120: medium priority:
+      Do you want to validate 'newContents' through an assert?
+
+Same as before. contents and newContents can be NULL.
 
 ------------------------------------------------------------------------
 For each of the first three faulty BDT implementations required by Step
@@ -198,7 +256,7 @@ In dtGood.c, functions and respective static helper functions should be
 grouped together whenever possible, and not loosely distributed, to
 facilitate tracing the function.
 
-See additional critique of DT_[un]linkParentToChild below.
+See additional critique of DT_linkParentToChild below.
 
 ------------------------------------------------------------------------
 nodeGood.c / node.h:
@@ -241,10 +299,5 @@ statements.
 
 DT_preOrderTraversal should have more descriptive names for local
 variables and parameters, instead of just letters.
-
-
-Some functions, such as Node_toString, Node_getParent,
-Node_getChild, fail to call CheckerDT to check invariants, possibly
-failing to report errors.
 
 ------------------------------------------------------------------------
